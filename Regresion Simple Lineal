@@ -4,30 +4,17 @@ Curso: Simulacion
 Programa: Regresion Lineal Simple
 Fecha: 15/09/2021
 */
-import  java.util.Scanner;
-
 public class Regresion {
-    private Scanner ingresar;
-    private double [] x,y,x2,xy;
-    private double sy,sx,sx2,sxy, b0, b1, t,m ;
-    int n;
-    public void Datos(){
-        ingresar = new Scanner(System.in);
-        System.out.println("Ingrese el tamaño de las tablas x y:  ");
-        n = ingresar.nextInt();
-        x=new double[n];
-        y=new double[n];
-        x2=new double[n];
-        xy=new double[n];
-        System.out.println("Ingrese los valores de la x: ");
-        for (int i=0; i<n; i++){
-            x[i]= ingresar.nextDouble();
-        }
-        System.out.println("Ingrese los valores de la y: ");
-        for (int i=0; i<n; i++){
-            y[i]= ingresar.nextDouble();
-        }
-    }
+    int n=9;
+    private double [] x={23,26,30,34,43,48,52,57,58};
+    private double [] y={651,762,856,1063,1190,1298,1421,1440,1518};
+    private double [] x2 =new double[n];
+    private double [] xy =new double[n];
+    private double [] yei = new double[3];
+    private double [] ex = {62,72,82};
+    private double sy,sx,sx2,sxy, b0, b1, t,m;
+
+
     public void CalcularBB(){
         for (int i=0; i<n; i++){
             sx+=x[i];
@@ -44,8 +31,9 @@ public class Regresion {
     }
     public void CalcularY(){
         System.out.println("Digite el valor de x");
-        t= ingresar.nextDouble();
-        m=t*b1+b0;
+        for (int i=0; i<3; i++){
+            yei[i]=ex[i]*b1+b0;
+        }
     }
     public void imprimir() {
         System.out.println("Los valores de x y son: ");
@@ -55,11 +43,13 @@ public class Regresion {
         }
         System.out.println("Los valores de Beta0 son: " + b0);
         System.out.println("Los valores de Beta1 son: " + b1);
-        System.out.println("Los valores de Y (y=b0+b1*x) calculados por X, B1 y B0 son: " + m);
+        System.out.println("Los valores de Y (y=b0+b1*x) calculados por X, B1 y B0 son: ");
+        for (int i=0; i<3; i++) {
+            System.out.println(yei[i]+"\t");
+        }
     }
     public static void main(String[] args){
         Regresion r = new Regresion();
-        r.Datos();
         r.CalcularBB();
         r.CalcularY();
         r.imprimir();
