@@ -1,0 +1,168 @@
+package Agente;
+import jade.core.Agent;
+import jade.core.behaviours.OneShotBehaviour;
+import java.text.DecimalFormat;
+
+public class AgenteRML extends Agent{
+    private double[][] matriz1 = {{1, 41.9, 29.1}, {1, 43.4, 29.3}, {1, 43.9, 29.5}, {1, 44.5, 29.7}, {1, 47.3, 29.9}, {1, 47.5, 30.3,}, {1, 47.9, 30.5}, {1, 50.2, 30.7}, {1, 52.8, 30.8}, {1, 53.2, 30.9}, {1, 56.7, 31.5}, {1, 57, 31.7}, {1, 63.5, 31.9}, {1, 65.3, 32}, {1, 71.1, 32.1}, {1, 77, 32.5}, {1, 77.8, 32.9}};
+    private double[] Y = {251.3, 251.3, 248.3, 267.5, 273.0, 276.5, 270.3, 274.9, 285.0, 290.0, 297.0, 302.5, 304.5, 309.3, 321.7, 330.7, 349.0};
+    private double[][] matrizTr, matrizR, matrizI;
+    private double[] resultadoY, betas;
+    private double[] factor1 = {81.5, 81.4, 82.2, 42.9, 44.4, 64.2};
+    private double[] factor2 = {33.2, 34.3, 35.2, 28.9, 31.3, 31.4};
+    private int[] next = {1, 2, 3, 4, 5, 6};
+    double det,rF1,rF2,rF3,rF4, rF5, rF6;
+    DecimalFormat df = new DecimalFormat("###.###");
+
+    protected void setup(){
+        System.out.println("Calculo de Regresion Simple");
+        addBehaviour(new MyOneShotBehaviour());
+    }
+    private class MyOneShotBehaviour extends OneShotBehaviour{
+        public void action(){
+            //Primera Matriz
+            matrizTr = new double[3][17];
+            System.out.println("\nPrimera matriz\n");
+            for (int i = 0; i < 17; i++) {
+                for (int j = 0; j < 3; j++) {
+                    System.out.print("|"+matriz1[i][j] + "| \t");
+                }
+                System.out.println("");
+            }
+
+            //Traspuesta
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 17; j++) {
+                    matrizTr[i][j] = matriz1[j][i];
+                }
+            }
+            System.out.println("\nLa matriz Traspuesta es:");
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 17; j++) {
+                    System.out.print("|"+matrizTr[i][j] + "| \t");
+                }
+                System.out.println("");
+            }
+
+            //Multiplicacion de matriz 1 por su transpuesta
+            System.out.println("\nLa multiplicacion de la matriz 1 por su transpuesta es: ");
+            matrizR= new double[3][3];
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    matrizR[0][0] = (matrizTr[0][0] * matriz1[0][0]) + (matrizTr[0][1] * matriz1[1][0]) + (matrizTr[0][2] * matriz1[2][0] + (matrizTr[0][3]) * (matriz1[3][0]) + (matrizTr[0][4]) * (matriz1[4][0]) + (matrizTr[0][5]) * (matriz1[5][0]) + (matrizTr[0][6]) * (matriz1[6][0]) + (matrizTr[0][7]) * (matriz1[7][0]) + (matrizTr[0][8]) * (matriz1[8][0]) + (matrizTr[0][9]) * (matriz1[9][0]) + (matrizTr[0][10]) * (matriz1[10][0]) + (matrizTr[0][11]) * (matriz1[11][0]) + (matrizTr[0][12]) * (matriz1[12][0]) + (matrizTr[0][13]) * (matriz1[13][0]) + (matrizTr[0][14]) * (matriz1[14][0]) + (matrizTr[0][15]) * (matriz1[15][0]) + (matrizTr[0][16]) * (matriz1[16][0]));
+                    matrizR[0][1] = (matrizTr[0][0] * matriz1[0][1]) + (matrizTr[0][1] * matriz1[1][1]) + (matrizTr[0][2] * matriz1[2][1] + (matrizTr[0][3]) * (matriz1[3][1]) + (matrizTr[0][4]) * (matriz1[4][1]) + (matrizTr[0][5]) * (matriz1[5][1]) + (matrizTr[0][6]) * (matriz1[6][1]) + (matrizTr[0][7]) * (matriz1[7][1]) + (matrizTr[0][8]) * (matriz1[8][1]) + (matrizTr[0][9]) * (matriz1[9][1]) + (matrizTr[0][10]) * (matriz1[10][1]) + (matrizTr[0][11]) * (matriz1[11][1]) + (matrizTr[0][12]) * (matriz1[12][1]) + (matrizTr[0][13]) * (matriz1[13][1]) + (matrizTr[0][14]) * (matriz1[14][1]) + (matrizTr[0][15]) * (matriz1[15][1]) + (matrizTr[0][16]) * (matriz1[16][1]));
+                    matrizR[0][2] = (matrizTr[0][0] * matriz1[0][2]) + (matrizTr[0][1] * matriz1[1][2]) + (matrizTr[0][2] * matriz1[2][2] + (matrizTr[0][3]) * (matriz1[3][2]) + (matrizTr[0][4]) * (matriz1[4][2]) + (matrizTr[0][5]) * (matriz1[5][2]) + (matrizTr[0][6]) * (matriz1[6][2]) + (matrizTr[0][7]) * (matriz1[7][2]) + (matrizTr[0][8]) * (matriz1[8][2]) + (matrizTr[0][9]) * (matriz1[9][2]) + (matrizTr[0][10]) * (matriz1[10][2]) + (matrizTr[0][11]) * (matriz1[11][2]) + (matrizTr[0][12]) * (matriz1[12][2]) + (matrizTr[0][13]) * (matriz1[13][2]) + (matrizTr[0][14]) * (matriz1[14][2]) + (matrizTr[0][15]) * (matriz1[15][2]) + (matrizTr[0][16]) * (matriz1[16][2]));
+                    ;
+                    matrizR[1][0] = (matrizTr[1][0] * matriz1[0][0]) + (matrizTr[1][1] * matriz1[1][0]) + (matrizTr[1][2] * matriz1[2][0] + (matrizTr[1][3]) * (matriz1[3][0]) + (matrizTr[1][4]) * (matriz1[4][0]) + (matrizTr[1][5]) * (matriz1[5][0]) + (matrizTr[1][6]) * (matriz1[6][0]) + (matrizTr[1][7]) * (matriz1[7][0]) + (matrizTr[1][8]) * (matriz1[8][0]) + (matrizTr[1][9]) * (matriz1[9][0]) + (matrizTr[1][10]) * (matriz1[10][0]) + (matrizTr[1][11]) * (matriz1[11][0]) + (matrizTr[1][12]) * (matriz1[12][0]) + (matrizTr[1][13]) * (matriz1[13][0]) + (matrizTr[1][14]) * (matriz1[14][0]) + (matrizTr[1][15]) * (matriz1[15][0]) + (matrizTr[1][16]) * (matriz1[16][0]));
+                    matrizR[1][1] = (matrizTr[1][0] * matriz1[0][1]) + (matrizTr[1][1] * matriz1[1][1]) + (matrizTr[1][2] * matriz1[2][1] + (matrizTr[1][3]) * (matriz1[3][1]) + (matrizTr[1][4]) * (matriz1[4][1]) + (matrizTr[1][5]) * (matriz1[5][1]) + (matrizTr[1][6]) * (matriz1[6][1]) + (matrizTr[1][7]) * (matriz1[7][1]) + (matrizTr[1][8]) * (matriz1[8][1]) + (matrizTr[1][9]) * (matriz1[9][1]) + (matrizTr[1][10]) * (matriz1[10][1]) + (matrizTr[1][11]) * (matriz1[11][1]) + (matrizTr[1][12]) * (matriz1[12][1]) + (matrizTr[1][13]) * (matriz1[13][1]) + (matrizTr[1][14]) * (matriz1[14][1]) + (matrizTr[1][15]) * (matriz1[15][1]) + (matrizTr[1][16]) * (matriz1[16][1]));
+                    matrizR[1][2] = (matrizTr[1][0] * matriz1[0][2]) + (matrizTr[1][1] * matriz1[1][2]) + (matrizTr[1][2] * matriz1[2][2] + (matrizTr[1][3]) * (matriz1[3][2]) + (matrizTr[1][4]) * (matriz1[4][2]) + (matrizTr[1][5]) * (matriz1[5][2]) + (matrizTr[1][6]) * (matriz1[6][2]) + (matrizTr[1][7]) * (matriz1[7][2]) + (matrizTr[1][8]) * (matriz1[8][2]) + (matrizTr[1][9]) * (matriz1[9][2]) + (matrizTr[1][10]) * (matriz1[10][2]) + (matrizTr[1][11]) * (matriz1[11][2]) + (matrizTr[1][12]) * (matriz1[12][2]) + (matrizTr[1][13]) * (matriz1[13][2]) + (matrizTr[1][14]) * (matriz1[14][2]) + (matrizTr[1][15]) * (matriz1[15][2]) + (matrizTr[1][16]) * (matriz1[16][2]));
+                    matrizR[2][0] = (matrizTr[2][0] * matriz1[0][0]) + (matrizTr[2][1] * matriz1[1][0]) + (matrizTr[2][2] * matriz1[2][0] + (matrizTr[2][3]) * (matriz1[3][0]) + (matrizTr[2][4]) * (matriz1[4][0]) + (matrizTr[2][5]) * (matriz1[5][0]) + (matrizTr[2][6]) * (matriz1[6][0]) + (matrizTr[2][7]) * (matriz1[7][0]) + (matrizTr[2][8]) * (matriz1[8][0]) + (matrizTr[2][9]) * (matriz1[9][0]) + (matrizTr[2][10]) * (matriz1[10][0]) + (matrizTr[2][11]) * (matriz1[11][0]) + (matrizTr[2][12]) * (matriz1[12][0]) + (matrizTr[2][13]) * (matriz1[13][0]) + (matrizTr[2][14]) * (matriz1[14][0]) + (matrizTr[2][15]) * (matriz1[15][0]) + (matrizTr[2][16]) * (matriz1[16][0]));
+                    matrizR[2][1] = (matrizTr[2][0] * matriz1[0][1]) + (matrizTr[2][1] * matriz1[1][1]) + (matrizTr[2][2] * matriz1[2][1] + (matrizTr[2][3]) * (matriz1[3][1]) + (matrizTr[2][4]) * (matriz1[4][1]) + (matrizTr[2][5]) * (matriz1[5][1]) + (matrizTr[2][6]) * (matriz1[6][1]) + (matrizTr[2][7]) * (matriz1[7][1]) + (matrizTr[2][8]) * (matriz1[8][1]) + (matrizTr[2][9]) * (matriz1[9][1]) + (matrizTr[2][10]) * (matriz1[10][1]) + (matrizTr[2][11]) * (matriz1[11][1]) + (matrizTr[2][12]) * (matriz1[12][1]) + (matrizTr[2][13]) * (matriz1[13][1]) + (matrizTr[2][14]) * (matriz1[14][1]) + (matrizTr[2][15]) * (matriz1[15][1]) + (matrizTr[2][16]) * (matriz1[16][1]));
+                    matrizR[2][2] = (matrizTr[2][0] * matriz1[0][2]) + (matrizTr[2][1] * matriz1[1][2]) + (matrizTr[2][2] * matriz1[2][2] + (matrizTr[2][3]) * (matriz1[3][2]) + (matrizTr[2][4]) * (matriz1[4][2]) + (matrizTr[2][5]) * (matriz1[5][2]) + (matrizTr[2][6]) * (matriz1[6][2]) + (matrizTr[2][7]) * (matriz1[7][2]) + (matrizTr[2][8]) * (matriz1[8][2]) + (matrizTr[2][9]) * (matriz1[9][2]) + (matrizTr[2][10]) * (matriz1[10][2]) + (matrizTr[2][11]) * (matriz1[11][2]) + (matrizTr[2][12]) * (matriz1[12][2]) + (matrizTr[2][13]) * (matriz1[13][2]) + (matrizTr[2][14]) * (matriz1[14][2]) + (matrizTr[2][15]) * (matriz1[15][2]) + (matrizTr[2][16]) * (matriz1[16][2]));
+                    System.out.print("|"+df.format(matrizR[i][j]) + "| \t");
+                }
+                System.out.println("\t");
+            }
+
+            //Multiplicacion de transpuesta de X por Y
+            System.out.println("\nLa multiplicacion de transpuesta de X por Y es ");
+            resultadoY = new double[3];
+            for (int i = 0; i < 3; i++) {
+                resultadoY[0] = (matrizTr[0][0] * Y[0]) + (matrizTr[0][1] * Y[1]) + (matrizTr[0][2] * Y[2]) + (matrizTr[0][3] * Y[3]) + (matrizTr[0][4] * Y[4]) + (matrizTr[0][5] * Y[5]) + (matrizTr[0][6] * Y[6]) + (matrizTr[0][7] * Y[7]) + (matrizTr[0][8] * Y[8]) + (matrizTr[0][9] * Y[9]) + (matrizTr[0][10] * Y[10]) + (matrizTr[0][11] * Y[11]) + (matrizTr[0][12] * Y[12]) + (matrizTr[0][13] * Y[13]) + (matrizTr[0][14] * Y[14]) + (matrizTr[0][15] * Y[15]) + (matrizTr[0][16] * Y[16]);
+                resultadoY[1] = (Y[0] * matrizTr[1][0]) + (Y[1] * matrizTr[1][1]) + (Y[2] * matrizTr[1][2]) + (Y[3] * matrizTr[1][3]) + (Y[4] * matrizTr[1][4]) + (Y[5] * matrizTr[1][5]) + (Y[6] * matrizTr[1][6]) + (Y[7] * matrizTr[1][7]) + (Y[8] * matrizTr[1][8]) + (Y[9] * matrizTr[1][9]) + (Y[10] * matrizTr[1][10]) + (Y[11] * matrizTr[1][11]) + (Y[12] * matrizTr[1][12]) + (Y[13] * matrizTr[1][13]) + (Y[14] * matrizTr[1][14]) + (Y[15] * matrizTr[1][15]) + (Y[16] * matrizTr[1][16]);
+                resultadoY[2] = (Y[0] * matrizTr[2][0]) + (Y[1] * matrizTr[2][1]) + (Y[2] * matrizTr[2][2]) + (Y[3] * matrizTr[2][3]) + (Y[4] * matrizTr[2][4]) + (Y[5] * matrizTr[2][5]) + (Y[6] * matrizTr[2][6]) + (Y[7] * matrizTr[2][7]) + (Y[8] * matrizTr[2][8]) + (Y[9] * matrizTr[2][9]) + (Y[10] * matrizTr[2][10]) + (Y[11] * matrizTr[2][11]) + (Y[12] * matrizTr[2][12]) + (Y[13] * matrizTr[2][13]) + (Y[14] * matrizTr[2][14]) + (Y[15] * matrizTr[2][15]) + (Y[16] * matrizTr[2][16]);
+
+
+                System.out.println("|"+df.format(resultadoY[i])+ "| \t");
+            }
+
+            //Calculo del determinante General
+            System.out.println("\nEl determinante general es: ");
+            det = (matrizR[0][0] * matrizR[1][1] * matrizR[2][2]) + (matrizR[0][1] * matrizR[1][2] * matrizR[2][0]) + (matrizR[0][2] * matrizR[1][0] * matrizR[2][1]);
+            det += ((matrizR[0][2] * matrizR[1][1] * matrizR[2][0] * -1) - (matrizR[0][0] * matrizR[1][2] * matrizR[2][1]) - (matrizR[0][1] * matrizR[1][0] * matrizR[2][2]));
+            System.out.println(df.format(det));
+
+            //Calculando la matriz inversa
+            System.out.println("\nLa matriz inversa es: ");
+            matrizI = new double[3][3];
+            matrizI[0][0] = ((matrizR[1][1] * matrizR[2][2]) - (matrizR[2][1] * matrizR[1][2]));
+            matrizI[1][0] = ((matrizR[0][1] * matrizR[2][2]) - (matrizR[2][0] * matrizR[1][2]));
+            matrizI[2][0] = ((matrizR[1][0] * matrizR[2][1]) - (matrizR[2][0] * matrizR[1][1]));
+            matrizI[0][1] = ((matrizR[0][1] * matrizR[2][2]) - (matrizR[2][1] * matrizR[0][2]));
+            matrizI[1][1] = ((matrizR[0][0] * matrizR[2][2]) - (matrizR[2][0] * matrizR[0][2]));
+            matrizI[2][1] = ((matrizR[0][0] * matrizR[2][1]) - (matrizR[2][0] * matrizR[0][1]));
+            matrizI[0][2] = ((matrizR[0][1] * matrizR[1][2]) - (matrizR[1][1] * matrizR[0][2]));
+            matrizI[1][2] = ((matrizR[0][0] * matrizR[1][2]) - (matrizR[1][0] * matrizR[0][2]));
+            matrizI[2][2] = ((matrizR[0][0] * matrizR[1][1]) - (matrizR[1][0] * matrizR[0][1]));
+
+            matrizI[0][1] *= -1;
+            matrizI[1][0] *= -1;
+            matrizI[1][2] *= -1;
+            matrizI[2][1] *= -1;
+
+            matrizI[0][0] = matrizI[0][0] / det;
+            matrizI[1][0] = matrizI[1][0] / det;
+            matrizI[2][0] = matrizI[2][0] / det;
+            matrizI[0][1] = matrizI[0][1] / det;
+            matrizI[1][1] = matrizI[1][1] / det;
+            matrizI[2][1] = matrizI[2][1] / det;
+            matrizI[0][2] = matrizI[0][2] / det;
+            matrizI[1][2] = matrizI[1][2] / det;
+            matrizI[2][2] = matrizI[2][2] / det;
+
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    System.out.print("|"+df.format(matrizI[i][j])+ "| \t");
+                }
+                System.out.println("\t");
+            }
+
+            //Calculando Betas
+            betas = new double[3];
+            for (int i=0; i<3; i++){
+                betas[0] += (resultadoY[i]* matrizI[0][i]);
+                betas[1] += (resultadoY[i]* matrizI[1][i]);
+                betas[2] += (resultadoY[i]* matrizI[2][i]);
+            }
+            System.out.println("\nResultado de betas");
+            for (int i = 0; i < 3; i++) {
+                if (i==0){
+                    System.out.println("Beta 0  "+ "|"+df.format(betas[i])+ "| \t");
+                }
+                else if (i==1){
+                    System.out.println("Beta 1  "+"|"+df.format(betas[i])+ "| \t");
+                }
+                else if (i==2){
+                    System.out.println("Beta 2  "+"|"+df.format(betas[i])+ "| \t");
+                }
+            }
+
+            //Pronosticar los respectivos Yiels de los siguientes factores
+            System.out.println("\nPronosticar los respectivos Yiels de los siguientes factores");
+            System.out.println("   | Factor 1 " + "| Factor 2"+ "|\t");
+            for (int i = 0; i < 6; i++) {
+                System.out.print(next[i]+ "  |\t");
+                System.out.println(factor1[i] + "  |  "+factor2[i]+ "   | \t");
+            }
+            for (int i = 0; i < 6; i++) {
+                rF1 = betas[0] + betas[1] * factor1[0] + betas[2] * factor2[0];
+                rF2 = betas[0] + betas[1] * factor1[1] + betas[2] * factor2[1];
+                rF3 = betas[0] + betas[1] * factor1[2] + betas[2] * factor2[2];
+                rF4 = betas[0] + betas[1] * factor1[3] + betas[2] * factor2[3];
+                rF5 = betas[0] + betas[1] * factor1[4] + betas[2] * factor2[4];
+                rF6 = betas[0] + betas[1] * factor1[5] + betas[2] * factor2[5];
+            }
+            System.out.println("\nResultados de los Yiels");
+            System.out.println("1) " + df.format(rF1));
+            System.out.println("2) " + df.format(rF2));
+            System.out.println("3) " + df.format(rF3));
+            System.out.println("4) " + df.format(rF4));
+            System.out.println("5) " + df.format(rF5));
+            System.out.println("6) " + df.format(rF6));
+        }
+        public  int onEnd(){
+            myAgent.doDelete();
+            return super.onEnd();
+        }
+    }
+}
